@@ -108,36 +108,52 @@ const nextBtn = lightbox.querySelector("#next");
 let currentGroup = [];
 let currentIndex = 0;
 
+// On clicking any image
 images.forEach((img) => {
   img.addEventListener("click", () => {
-    const groupName = img.parentElement.dataset.group;
+    const groupName = img.parentElement.dataset.group; // get data-group
+    // Select all images with the same data-group
     currentGroup = Array.from(
       document.querySelectorAll(`.image-card[data-group="${groupName}"] img`)
     );
     currentIndex = currentGroup.indexOf(img);
-    lightboxImg.src = currentGroup[currentIndex].src;
+
     lightbox.classList.add("active");
+    showImage(currentIndex); // show the clicked image
   });
 });
 
 function showImage(index) {
-  if (index < 0) index = currentGroup.length - 1;
-  if (index >= currentGroup.length) index = 0;
+  // Clamp index between 0 and last
+  if (index < 0) index = 0;
+  if (index >= currentGroup.length) index = currentGroup.length - 1;
   currentIndex = index;
+
   lightboxImg.src = currentGroup[currentIndex].src;
+
+  // Show/hide prev/next buttons at edges
+  prevBtn.style.display = currentIndex === 0 ? "none" : "inline-block";
+  nextBtn.style.display =
+    currentIndex === currentGroup.length - 1 ? "none" : "inline-block";
 }
 
+// Prev/Next button clicks
 prevBtn.addEventListener("click", () => showImage(currentIndex - 1));
 nextBtn.addEventListener("click", () => showImage(currentIndex + 1));
 
+// Close lightbox
 closeBtn.addEventListener("click", () => lightbox.classList.remove("active"));
 lightbox.addEventListener("click", (e) => {
   if (e.target === lightbox) lightbox.classList.remove("active");
 });
 
+// Keyboard navigation
 document.addEventListener("keydown", (e) => {
   if (!lightbox.classList.contains("active")) return;
+
   if (e.key === "Escape") lightbox.classList.remove("active");
-  if (e.key === "ArrowLeft") showImage(currentIndex - 1);
-  if (e.key === "ArrowRight") showImage(currentIndex + 1);
+  else if (e.key === "ArrowLeft" && currentIndex > 0)
+    showImage(currentIndex - 1);
+  else if (e.key === "ArrowRight" && currentIndex < currentGroup.length - 1)
+    showImage(currentIndex + 1);
 });
