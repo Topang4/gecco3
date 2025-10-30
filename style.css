@@ -92,7 +92,7 @@ section {
 
 /* === HERO === */
 .hero {
-  background: url("images/2_Corridor.jpg") center/cover no-repeat;
+  background: url("all-images/hero/hero_small.jpg") center/cover no-repeat;
   min-height: 90vh;
   display: flex;
   align-items: center;
@@ -158,9 +158,35 @@ section {
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.image-card::after {
+  content: "Click to view more";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 8px 0;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 .image-card:hover img {
   transform: scale(1.08);
+}
+.image-card img:not(:first-child) {
+  display: none;
 }
 
 /* Load more */
@@ -227,6 +253,19 @@ section {
 
   .hamburger {
     display: flex;
+  }
+
+  .image-card::after {
+    content: "Tap to view more";
+    opacity: 1;
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 0.8rem;
+    padding: 6px 0;
+  }
+
+  .image-card img:first-child {
+    filter: brightness(85%);
   }
 
   .mobile-menu {
