@@ -157,3 +157,20 @@ document.addEventListener("keydown", (e) => {
   else if (e.key === "ArrowRight" && currentIndex < currentGroup.length - 1)
     showImage(currentIndex + 1);
 });
+
+// Preload first image of each card
+document.querySelectorAll(".image-card").forEach((card) => {
+  const firstImg = card.querySelector("img");
+  if (firstImg) new Image().src = firstImg.src;
+});
+
+// Preload full group on hover
+document.querySelectorAll(".image-card").forEach((card) => {
+  card.addEventListener("mouseenter", () => {
+    const groupName = card.dataset.group;
+    const groupImages = Array.from(
+      document.querySelectorAll(`.image-card[data-group="${groupName}"] img`)
+    );
+    groupImages.forEach((img) => (new Image().src = img.src));
+  });
+});
